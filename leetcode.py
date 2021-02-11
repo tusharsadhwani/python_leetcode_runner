@@ -75,8 +75,8 @@ def run_leetcode_solution(filename: str) -> int:
             result = 'PASSED'
             result_color = color.GREEN
         except AssertionError:
-            result = colored('FAILED', color.RED)
-            result_color = color.GREEN
+            result = 'FAILED'
+            result_color = color.RED
 
         inputs_string = ', '.join(str(i) for i in inputs)
         test_case = f"Test {index} - ({inputs_string})"
