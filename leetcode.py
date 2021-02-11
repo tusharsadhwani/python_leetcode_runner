@@ -63,11 +63,7 @@ def run_leetcode_solution(filename: str) -> int:
     if hasattr(module, 'validator'):
         validator = getattr(module, 'validator')
     else:
-        def validator(
-                method: Callable[..., Any],
-                inputs: tuple[Any, ...],
-                expected: tuple[Any, ...]) -> None:
-            assert method(*inputs) == expected
+        validator = default_validator
 
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
@@ -78,16 +74,23 @@ def run_leetcode_solution(filename: str) -> int:
             result = 'FAILED'
             result_color = color.RED
 
-        inputs_string = ', '.join(str(i) for i in inputs)
-        test_case = f"Test {index} - ({inputs_string})"
+        test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
         print_test_result(test_case, result, result_color)
 
     return 0
 
 
-def print_test_result(test_case: str, result: str, color: str) -> None:
+def default_validator(
+        method: Callable[..., Any],
+        inputs: tuple[Any, ...],
+        expected: tuple[Any, ...]) -> None:
+    """Default validator for leetcode tests"""
+    assert method(*inputs) == expected
+
+
+def print_test_result(test_case: str, result: str, clr: str) -> None:
     """Prints colored test result"""
-    colored_result = colored(result, color)
+    colored_result = colored(result, clr)
     apparent_padding = len(colored_result) - len(result)
 
     width, _ = os.get_terminal_size()
