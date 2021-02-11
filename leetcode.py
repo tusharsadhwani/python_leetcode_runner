@@ -8,14 +8,6 @@ Usage:
 """
 import sys
 
-import pytest
-
-
-def METHOD(inputs): return None
-
-
-TESTS = []
-
 
 def pyleet() -> int:
     """CLI interface."""
