@@ -7,6 +7,7 @@ Usage:
     pyleet remove_duplicates.py
 """
 import sys
+from typing import Any, Callable
 
 
 def pyleet() -> int:
@@ -46,12 +47,32 @@ def run_leetcode_solution(filename: str) -> int:
         print('Error: Make sure you only put one method inside Solution class')
         return 1
 
+    method_name, = method_names
+    method = getattr(solution_class(), method_name)
+
     if not hasattr(module, 'tests'):
         print(f'Error: No tests found in file: {filename}')
         return 1
 
-    method_name, = method_names
-    method = getattr(solution_class(), method_name)
-    method()
+    tests = getattr(module, 'tests')
+
+    if hasattr(module, 'validator'):
+        validator = getattr(module, 'validator')
+    else:
+        def validator(
+                method: Callable[..., Any],
+                inputs: tuple[Any, ...],
+                expected: tuple[Any, ...]) -> None:
+            assert method(*inputs) == expected
+
+    for index, (inputs, expected) in enumerate(tests):
+        try:
+            validator(method, inputs, expected)
+            result = 'PASSED'
+        except AssertionError:
+            result = 'FAILED'
+
+        inputs_string = ', '.join(str(i) for i in inputs)
+        print(f"Case {index} - ({inputs_string}) - {result}")
 
     return 0
