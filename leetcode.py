@@ -6,8 +6,12 @@ A CLI app to run any given Leetcode python solution.
 Usage:
     pyleet remove_duplicates.py
 """
+import os
 import sys
 from typing import Any, Callable
+
+import color
+from color import format_color, use_color
 
 
 def pyleet() -> int:
@@ -65,14 +69,37 @@ def run_leetcode_solution(filename: str) -> int:
                 expected: tuple[Any, ...]) -> None:
             assert method(*inputs) == expected
 
-    for index, (inputs, expected) in enumerate(tests):
+    for index, (inputs, expected) in enumerate(tests, start=1):
         try:
             validator(method, inputs, expected)
             result = 'PASSED'
+            result_color = color.GREEN
         except AssertionError:
-            result = 'FAILED'
+            result = colored('FAILED', color.RED)
+            result_color = color.GREEN
 
         inputs_string = ', '.join(str(i) for i in inputs)
-        print(f"Case {index} - ({inputs_string}) - {result}")
+        test_case = f"Test {index} - ({inputs_string})"
+        print_test_result(test_case, result, result_color)
 
     return 0
+
+
+def print_test_result(test_case: str, result: str, color: str) -> None:
+    """Prints colored test result"""
+    colored_result = colored(result, color)
+    apparent_padding = len(colored_result) - len(result)
+
+    width, _ = os.get_terminal_size()
+    test_case_width = len(test_case)
+    rest_width = width - test_case_width + apparent_padding
+
+    print(f'{test_case}{colored_result:.>{rest_width}}')
+
+
+def colored(string: str, clr: str) -> str:
+    """Returns colored string"""
+    if use_color('auto'):
+        return format_color(string, clr, True)
+
+    return string

@@ -12,6 +12,9 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/tusharsadhwani/python_leetcode_runner",
+    license="MIT",
+    license_file="LICENSE",
+    license_files=['licenses/LICENSE_pre-commit_pre-commit'],
     py_modules=['leetcode'],
     classifiers=[
         "Programming Language :: Python :: 3",
