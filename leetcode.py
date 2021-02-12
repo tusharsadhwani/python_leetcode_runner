@@ -8,6 +8,8 @@ Usage:
 """
 import os
 import sys
+from traceback import extract_tb
+from types import TracebackType
 from typing import Any, Callable, Optional
 
 import color
@@ -82,31 +84,41 @@ def default_validator(
         expected: tuple[Any, ...]) -> None:
     """Default validator for leetcode tests"""
     output = method(*inputs)
-    assert output == expected, output
+    assert output == expected, (output, expected)
 
 
 def run_testcases(
     method:  Callable[..., Any],
     tests: list[tuple[Any, Any]],
     validator: Any,
-) -> list[tuple[Any, Any, Any]]:
+) -> list[tuple[TracebackType, Any, Any, Any]]:
     """Run given test cases, and collect all failing assertions"""
-    failed_testcases: list[tuple[Any, Any, Any]] = []
+    failed_testcases: list[tuple[TracebackType, Any, Any, Any]] = []
+
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
             validator(method, inputs, expected)
             result = 'PASSED'
             result_color = color.GREEN + color.BOLD
-        except AssertionError as exception:
-            if len(exception.args) != 1:
+        except AssertionError as exc:
+            *_, trace = sys.exc_info()
+            assert trace is not None
+
+            if len(exc.args) != 1:
                 raise ValueError(
                     "No assertion value provided in custom validator"
-                ) from exception
+                ) from exc
+
+            assertion_values, = exc.args
+            if len(assertion_values) != 2:
+                raise ValueError(
+                    "Assertion value must be provided as (output, expected)"
+                ) from exc
 
             result = 'FAILED'
             result_color = color.RED + color.BOLD
-            output, = exception.args
-            failed_testcases.append((inputs, expected, output))
+            output, expected = assertion_values
+            failed_testcases.append((trace, inputs, expected, output))
 
         test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
         print_test_result(test_case, result, result_color)
@@ -115,16 +127,19 @@ def run_testcases(
 
 
 def print_failed_testcases(
-        failed_testcases: list[tuple[Any, Any, Any]]
+        failed_testcases: list[tuple[TracebackType, Any, Any, Any]]
 ) -> None:
     """Prints failed test cases"""
     err_color = color.BOLD + color.ERROR
 
     print_colored('Errors:', clr=err_color)
-    for inputs, expected, output in failed_testcases:
+    for traceback, inputs, expected, output in failed_testcases:
         inputs_string = ', '.join(map(str, inputs))
+        assertion = get_assert_statement(traceback)
+
         print()
         print_colored('Inputs:', inputs_string, clr=err_color)
+        print_colored('Assertion:', assertion, clr=err_color)
         print_colored('Expected:', expected, clr=err_color)
         print_colored('Output:', output, clr=err_color)
 
@@ -139,6 +154,13 @@ def print_test_result(test_case: str, result: str, clr: str) -> None:
     rest_width = width - test_case_width + apparent_padding
 
     print(f'{test_case}{colored_result:.>{rest_width}}')
+
+
+def get_assert_statement(traceback: Any) -> str:
+    """Gets the line of code that the assertion came from"""
+    tb_info = extract_tb(traceback)
+    *_, text = tb_info[-1]
+    return str(text)
 
 
 def colored(string: str, clr: str) -> str:
