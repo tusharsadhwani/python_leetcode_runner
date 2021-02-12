@@ -16,7 +16,7 @@ Say your solution file `add_numbers.py` looks like this:
 
 ```python
 class Solution:
-    def addNumbers(self, nums: List[int]) -> int:
+    def addNumbers(self, nums: list[int]) -> int:
         return sum(nums)
 ```
 
@@ -24,7 +24,7 @@ All you need to add to the file is a few test cases, usually provided to you in 
 
 ```python
 class Solution:
-    def addNumbers(self, nums: List[int]) -> int:
+    def addNumbers(self, nums: list[int]) -> int:
         return sum(nums)
 
 tests = [
@@ -57,13 +57,19 @@ A validator is a function that receives 3 arguments:
 
 - `method`: your leetcode solution function
 - `inputs`: your test inputs tuple
-- `output`: your test output value
+- `expected`: your expected test output value
+
+To make assertions, you have to use `assert` statements in the following way:
+
+```python
+assert output == expected, (output, expected)  # this tuple is important!
+```
 
 For example, let's add custom validation to the `addNumbers` method:
 
 ```python
 class Solution:
-    def addNumbers(self, nums: List[int]) -> int:
+    def addNumbers(self, nums: list[int]) -> int:
         return sum(nums)
 
 tests = [
@@ -77,12 +83,13 @@ tests = [
     ),
 ]
 
-def validator(addNumbers, inputs, output):
+def validator(addNumbers, inputs, expected):
     nums = inputs[0]
-    assert addNumbers(nums) == output
+    output = addNumbers(nums)
+    assert output == expected, (output, expected)
 ```
 
-Here's a more sensible example, [remove_duplicates](https://leetcode.com/problems/remove-duplicates-from-sorted-array/):
+Here's a more elaborate example, [remove_duplicates](https://leetcode.com/problems/remove-duplicates-from-sorted-array/):
 
 ```python
 class Solution:
@@ -113,14 +120,14 @@ tests = [
 ]
 
 
-def validator(method, inputs, outputs):
+def validator(removeDuplicates, inputs, outputs):
     nums, = inputs
     length, expected = outputs
 
-    new_length = method(nums)
+    new_length = removeDuplicates(nums)
 
-    assert length == new_length
-    assert nums[:new_length] == expected
+    assert length == new_length, (length, new_length)
+    assert nums[:new_length] == expected, (nums[:new_length], expected)
 ```
 
 Run the file against sample inputs by doing:
