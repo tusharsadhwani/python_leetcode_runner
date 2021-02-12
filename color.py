@@ -60,8 +60,11 @@ RED = '\033[41m'
 GREEN = '\033[42m'
 YELLOW = '\033[43;30m'
 TURQUOISE = '\033[46;30m'
+BOLD = '\033[1m'
 SUBTLE = '\033[2m'
 NORMAL = '\033[m'
+SUCCESS = '\033[32m'
+ERROR = '\033[31m'
 
 
 def format_color(text: str, color: str, use_color_setting: bool) -> str:
