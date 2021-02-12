@@ -12,7 +12,7 @@ pip install python-leetcode-runner
 
 ## Usage
 
-Say your solution file `remove_duplicates.py` looks like this:
+Say your solution file `add_numbers.py` looks like this:
 
 ```python
 class Solution:

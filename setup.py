@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="python_leetcode_runner",
-    version="1.0.0",
+    version="1.0.1",
     author="Tushar Sadhwani",
     author_email="tushar.sadhwani000@gmail.com",
     description="A CLI app to run any given Leetcode python solution.",
@@ -15,7 +15,7 @@ setuptools.setup(
     license="MIT",
     license_file="LICENSE",
     license_files=['licenses/LICENSE_pre-commit_pre-commit'],
-    py_modules=['leetcode'],
+    py_modules=['leetcode', 'color'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
