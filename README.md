@@ -2,7 +2,7 @@
 
 Test your leetcode Python solutions locally.
 
-![demo image](https://user-images.githubusercontent.com/43412083/107687412-752ddc00-6ccc-11eb-85cc-e4e76e13f06a.png)
+![demo image](https://user-images.githubusercontent.com/43412083/107806692-2b58fa80-6d8d-11eb-9b4b-137ca9792476.png)
 
 ## Installation
 
