@@ -130,3 +130,7 @@ Run the file against sample inputs by doing:
 Test 1 - ([1, 2, 2])......................................................PASSED
 Test 2 - ([0, 1, 2, 3, 4, 2, 2, 3, 3, 4]).................................PASSED
 ```
+
+### Code Snippets
+
+If you're using VSCode, you can use the provided [code snippets](https://github.com/tusharsadhwani/python_leetcode_runner/blob/master/python.code-snippets) to help write the test cases faster.

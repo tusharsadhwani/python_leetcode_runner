@@ -1,0 +1,25 @@
+{
+  "Leetcode tests": {
+    "scope": "python",
+    "prefix": "tests",
+    "body": [
+      "tests = [",
+      "    (",
+      "        ($1,),",
+      "        $2,",
+      "    ),",
+      "    $0",
+      "]"
+    ]
+  },
+  "Leetcode test case": {
+    "scope": "python",
+    "prefix": "tc",
+    "body": ["(", "    ($1,),", "    $2,", "),", "$0"]
+  },
+  "Leetcode validator": {
+    "scope": "python",
+    "prefix": "validator",
+    "body": ["def validator(${1:method}, inputs, output):", "    $0"]
+  }
+}
