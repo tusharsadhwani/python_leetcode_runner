@@ -151,6 +151,10 @@ def print_test_result(test_case: str, result: str, clr: str) -> None:
 
     width, _ = os.get_terminal_size()
     test_case_width = len(test_case)
+    if test_case_width > width - len(result) - 3:
+        test_case_width = width - len(result) - 3
+        test_case = test_case[:test_case_width]
+
     rest_width = width - test_case_width + apparent_padding
 
     print(f'{test_case}{colored_result:.>{rest_width}}')
