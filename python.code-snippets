@@ -20,6 +20,6 @@
   "Leetcode validator": {
     "scope": "python",
     "prefix": "validator",
-    "body": ["def validator(${1:method}, inputs, output):", "    $0"]
+    "body": ["def validator(${1:method}, inputs, expected):", "    $0"]
   }
 }
