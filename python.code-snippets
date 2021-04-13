@@ -1,6 +1,5 @@
 {
   "Leetcode tests": {
-    "scope": "python",
     "prefix": "tests",
     "body": [
       "tests = [",
@@ -13,13 +12,15 @@
     ]
   },
   "Leetcode test case": {
-    "scope": "python",
     "prefix": "tc",
     "body": ["(", "    ($1,),", "    $2,", "),", "$0"]
   },
   "Leetcode validator": {
-    "scope": "python",
     "prefix": "validator",
     "body": ["def validator(${1:method}, inputs, expected):", "    $0"]
+  },
+  "Leetcode assert": {
+    "prefix": "asr",
+    "body": ["assert ${1:output} == ${2:expected}, ($1, $2)"]
   }
 }
