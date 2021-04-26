@@ -100,6 +100,10 @@ def run_testcases(
             validator(method, inputs, expected)
             result = 'PASSED'
             result_color = color.GREEN + color.BOLD
+
+        except KeyboardInterrupt:
+            break
+
         except AssertionError as exc:
             *_, trace = sys.exc_info()
             assert trace is not None
@@ -122,6 +126,7 @@ def run_testcases(
 
         test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
         print_test_result(test_case, result, result_color)
+    print()
 
     return failed_testcases
 
