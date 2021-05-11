@@ -10,7 +10,7 @@ import os
 import sys
 from traceback import extract_tb
 from types import TracebackType
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional, Tuple
 
 import color
 from color import format_color, use_color
@@ -32,7 +32,7 @@ def run_leetcode_solution(filepath: str) -> int:
     try:
         sys.path.append('.')  # TODO: add support for subdirectories
         filename = os.path.basename(filepath)
-        module_name = filename.removesuffix('.py')
+        module_name = filename[:-3] if filename.endswith('.py') else filename
         module = __import__(module_name)
     except ModuleNotFoundError:
         print_error(f'Unable to import file: {filepath}')
@@ -81,8 +81,8 @@ def run_leetcode_solution(filepath: str) -> int:
 
 def default_validator(
         method: Callable[..., Any],
-        inputs: tuple[Any, ...],
-        expected: tuple[Any, ...]) -> None:
+        inputs: Tuple[Any, ...],
+        expected: Tuple[Any, ...]) -> None:
     """Default validator for leetcode tests"""
     output = method(*inputs)
     assert output == expected, (output, expected)
@@ -90,11 +90,11 @@ def default_validator(
 
 def run_testcases(
     method:  Callable[..., Any],
-    tests: list[tuple[Any, Any]],
+    tests: List[Tuple[Any, Any]],
     validator: Any,
-) -> list[tuple[TracebackType, Any, Any, Any]]:
+) -> List[Tuple[TracebackType, Any, Any, Any]]:
     """Run given test cases, and collect all failing assertions"""
-    failed_testcases: list[tuple[TracebackType, Any, Any, Any]] = []
+    failed_testcases: List[Tuple[TracebackType, Any, Any, Any]] = []
 
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
@@ -133,7 +133,7 @@ def run_testcases(
 
 
 def print_failed_testcases(
-        failed_testcases: list[tuple[TracebackType, Any, Any, Any]]
+        failed_testcases: List[Tuple[TracebackType, Any, Any, Any]]
 ) -> None:
     """Prints failed test cases"""
     err_color = color.BOLD + color.ERROR
