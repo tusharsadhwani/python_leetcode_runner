@@ -23,22 +23,23 @@ def pyleet() -> int:
         print_error('No filename provided')
         return 1
 
-    filename = sys.argv[1]
-    return run_leetcode_solution(filename)
+    filepath = sys.argv[1]
+    return run_leetcode_solution(filepath)
 
 
-def run_leetcode_solution(filename: str) -> int:
+def run_leetcode_solution(filepath: str) -> int:
     """Runs the leetcode solution file"""
     try:
-        sys.path.append('.')
+        sys.path.append('.')  # TODO: add support for subdirectories
+        filename = os.path.basename(filepath)
         module_name = filename.removesuffix('.py')
         module = __import__(module_name)
     except ModuleNotFoundError:
-        print_error(f'Unable to import file: {filename}')
+        print_error(f'Unable to import file: {filepath}')
         return 1
 
     if not hasattr(module, 'Solution'):
-        print_error(f'No Solution class found in file: {filename}')
+        print_error(f'No Solution class found in file: {filepath}')
         return 1
 
     solution_class = getattr(module, 'Solution')
@@ -57,7 +58,7 @@ def run_leetcode_solution(filename: str) -> int:
     method = getattr(solution_class(), method_name)
 
     if not hasattr(module, 'tests'):
-        print_error(f'No tests found in file: {filename}')
+        print_error(f'No tests found in file: {filepath}')
         return 1
 
     tests = getattr(module, 'tests')
