@@ -12,6 +12,8 @@ pip install python-leetcode-runner
 
 ## Usage
 
+> I have a beginner's guide [over here](https://dev.to/tusharsadhwani/ace-your-leetcode-preparations-40l)
+
 Say your solution file `add_numbers.py` looks like this:
 
 ```python
