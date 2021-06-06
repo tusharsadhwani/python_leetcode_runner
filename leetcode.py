@@ -10,6 +10,7 @@ import copy
 import os
 import sys
 from traceback import extract_tb
+import traceback
 from types import TracebackType
 from typing import Any, Callable, List, Optional, Tuple
 
@@ -100,13 +101,21 @@ def run_testcases(
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
             validator(method, copy.deepcopy(inputs), expected)
+
             result = 'PASSED'
             result_color = color.GREEN + color.BOLD
 
         except KeyboardInterrupt:
             break
 
-        except AssertionError as exc:
+        except Exception as exc:
+            result = 'FAILED'
+            result_color = color.RED + color.BOLD
+
+            if type(exc) != AssertionError:
+                traceback.print_exc()
+                continue
+
             *_, trace = sys.exc_info()
             assert trace is not None
 
@@ -121,14 +130,12 @@ def run_testcases(
                     "Assertion value must be provided as (output, expected)"
                 ) from exc
 
-            result = 'FAILED'
-            result_color = color.RED + color.BOLD
             output, expected = assertion_values
             failed_testcases.append((trace, inputs, expected, output))
 
-        test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
-        print_test_result(test_case, result, result_color)
-    print()
+        finally:
+            test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
+            print_test_result(test_case, result, result_color)
 
     return failed_testcases
 
