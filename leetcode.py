@@ -6,6 +6,7 @@ A CLI app to run any given Leetcode python solution.
 Usage:
     pyleet remove_duplicates.py
 """
+import copy
 import os
 import sys
 from traceback import extract_tb
@@ -98,7 +99,7 @@ def run_testcases(
 
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
-            validator(method, inputs, expected)
+            validator(method, copy.deepcopy(inputs), expected)
             result = 'PASSED'
             result_color = color.GREEN + color.BOLD
 
