@@ -18,25 +18,25 @@ Say your solution file `add_numbers.py` looks like this:
 
 ```python
 class Solution:
-    def addNumbers(self, nums: list[int]) -> int:
-        return sum(nums)
+    def addNumbers(self, x: int, y: int) -> int:
+        return x + y
 ```
 
 All you need to add to the file is a few test cases, usually provided to you in the leetcode question description:
 
 ```python
 class Solution:
-    def addNumbers(self, nums: list[int]) -> int:
-        return sum(nums)
+    def addNumbers(self, x: int, y: int) -> int:
+        return x + y
 
 tests = [
     (
-        ([1, 2, 3],),     # input tuple
-        6,                # output
+        (2, 4,),      # input tuple
+        6,            # output
     ),
     (
-        ([4, 5, 6, 7],),  # input tuple
-        22,               # output
+        (45, 67,),    # input tuple
+        112,          # output
     ),
 ]
 ```
