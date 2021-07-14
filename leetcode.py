@@ -70,12 +70,13 @@ def run_leetcode_solution(filepath: str) -> int:
     else:
         validator = default_validator
 
-    failed_testcases = run_testcases(method, tests, validator)
+    failed_testcases, errored_count = run_testcases(method, tests, validator)
 
-    if len(failed_testcases) == 0:
+    if len(failed_testcases) + errored_count == 0:
         success_color = color.BOLD + color.SUCCESS
         print_colored('All cases passed!', clr=success_color)
-    else:
+
+    if failed_testcases:
         print_failed_testcases(failed_testcases)
 
     return 0
@@ -94,9 +95,10 @@ def run_testcases(
     method:  Callable[..., Any],
     tests: List[Tuple[Any, Any]],
     validator: Any,
-) -> List[Tuple[TracebackType, Any, Any, Any]]:
+) -> Tuple[List[Tuple[TracebackType, Any, Any, Any]], int]:
     """Run given test cases, and collect all failing assertions"""
     failed_testcases: List[Tuple[TracebackType, Any, Any, Any]] = []
+    errored_count = 0
 
     for index, (inputs, expected) in enumerate(tests, start=1):
         try:
@@ -114,6 +116,7 @@ def run_testcases(
 
             if type(exc) != AssertionError:
                 traceback.print_exc()
+                errored_count += 1
                 continue
 
             *_, trace = sys.exc_info()
@@ -137,7 +140,7 @@ def run_testcases(
             test_case = f"Test {index} - ({', '.join(map(str, inputs))})"
             print_test_result(test_case, result, result_color)
 
-    return failed_testcases
+    return failed_testcases, errored_count
 
 
 def print_failed_testcases(
