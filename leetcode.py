@@ -8,6 +8,7 @@ Usage:
 """
 import copy
 import os
+import shutil
 import sys
 from traceback import extract_tb
 import traceback
@@ -166,7 +167,7 @@ def print_test_result(test_case: str, result: str, clr: str) -> None:
     colored_result = colored(result, clr)
     apparent_padding = len(colored_result) - len(result)
 
-    width, _ = os.get_terminal_size()
+    width, _ = shutil.get_terminal_size()
     test_case_width = len(test_case)
     if test_case_width > width - len(result) - 3:
         test_case_width = width - len(result) - 3
