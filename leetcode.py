@@ -46,8 +46,7 @@ def run_leetcode_solution(filepath: str) -> int:
         return 1
 
     solution_class = getattr(module, 'Solution')
-    method_names = [name for name in dir(solution_class)
-                    if not name.startswith('_')]
+    method_names = [name for name in dir(solution_class) if not name.startswith('_')]
 
     if len(method_names) == 0:
         print_error('No methods found inside Solution class')
@@ -57,7 +56,7 @@ def run_leetcode_solution(filepath: str) -> int:
         print_error('Make sure you only put one method inside Solution class')
         return 1
 
-    method_name, = method_names
+    (method_name,) = method_names
     method = getattr(solution_class(), method_name)
 
     if not hasattr(module, 'tests'):
@@ -84,16 +83,17 @@ def run_leetcode_solution(filepath: str) -> int:
 
 
 def default_validator(
-        method: Callable[..., Any],
-        inputs: Tuple[Any, ...],
-        expected: Tuple[Any, ...]) -> None:
+    method: Callable[..., Any],
+    inputs: Tuple[Any, ...],
+    expected: Tuple[Any, ...],
+) -> None:
     """Default validator for leetcode tests"""
     output = method(*inputs)
     assert output == expected, (output, expected)
 
 
 def run_testcases(
-    method:  Callable[..., Any],
+    method: Callable[..., Any],
     tests: List[Tuple[Any, Any]],
     validator: Any,
 ) -> Tuple[List[Tuple[TracebackType, Any, Any, Any]], int]:
@@ -128,7 +128,7 @@ def run_testcases(
                     "No assertion value provided in custom validator"
                 ) from exc
 
-            assertion_values, = exc.args
+            (assertion_values,) = exc.args
             if len(assertion_values) != 2:
                 raise ValueError(
                     "Assertion value must be provided as (output, expected)"
@@ -145,7 +145,7 @@ def run_testcases(
 
 
 def print_failed_testcases(
-        failed_testcases: List[Tuple[TracebackType, Any, Any, Any]]
+    failed_testcases: List[Tuple[TracebackType, Any, Any, Any]]
 ) -> None:
     """Prints failed test cases"""
     err_color = color.BOLD + color.ERROR
@@ -197,7 +197,7 @@ def print_colored(
     *values: Any,
     clr: Optional[str] = None,
     sep: str = ' ',
-    end: str = '\n'
+    end: str = '\n',
 ) -> None:
     """Print, but colored"""
     text = sep.join(map(str, values)) + end
