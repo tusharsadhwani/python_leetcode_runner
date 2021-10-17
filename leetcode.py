@@ -32,9 +32,10 @@ def pyleet() -> int:
 
 def run_leetcode_solution(filepath: str) -> int:
     """Runs the leetcode solution file"""
+    filepath = os.path.normpath(filepath)
     try:
-        sys.path.append('.')  # TODO: add support for subdirectories
-        filename = os.path.basename(filepath)
+        directory, _, filename = filepath.rpartition(os.path.sep)
+        sys.path.append(directory)
         module_name = filename[:-3] if filename.endswith('.py') else filename
         module = __import__(module_name)
     except ModuleNotFoundError:
