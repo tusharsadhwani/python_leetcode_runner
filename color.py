@@ -101,12 +101,3 @@ def use_color(setting: str) -> bool:
             os.getenv('TERM') != 'dumb'
         )
     )
-
-
-def add_color_option(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument(
-        '--color', default=os.environ.get('PRE_COMMIT_COLOR', 'auto'),
-        type=use_color,
-        metavar='{' + ','.join(COLOR_CHOICES) + '}',
-        help='Whether to use color in output.  Defaults to `%(default)s`.',
-    )
